@@ -77,6 +77,72 @@
       const db = firebase.firestore();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"
+      integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"
+      integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      // Edited from https://gist.github.com/tajpure/47c65cf72c44cb16f3a5df0ebc045f2f
+      const renderer = new marked.Renderer();
+      const parse = (text) => {
+        const blockRegex = /\$\$[^\$]*\$\$/g;
+        const inlineRegex = /\$[^\$]*\$/g;
+        let blockExprArray = text.match(blockRegex);
+        let inlineExprArray = text.match(inlineRegex);
+        for (let i in blockExprArray) {
+          const expr = blockExprArray[i];
+          const result = renderMathsExpression(expr);
+          text = text.replace(expr, result);
+        }
+        for (let i in inlineExprArray) {
+          const expr = inlineExprArray[i];
+          const result = renderMathsExpression(expr);
+          text = text.replace(expr, result);
+        }
+        return text;
+      };
+      const updateComponent = (componentName) => {
+        const originComponent = renderer[componentName].bind(renderer);
+        renderer[componentName] = (text, ...rest) =>
+          originComponent(parse(text), ...rest);
+      };
+      updateComponent("paragraph");
+      updateComponent("heading");
+      updateComponent("list");
+      function renderMathsExpression(expr) {
+        if (expr[0] === "$" && expr[expr.length - 1] === "$") {
+          let displayStyle = false;
+          expr = expr.substr(1, expr.length - 2);
+          if (expr[0] === "$" && expr[expr.length - 1] === "$") {
+            displayStyle = true;
+            expr = expr.substr(1, expr.length - 2);
+          }
+          let html = null;
+          try {
+            html = katex.renderToString(expr);
+          } catch (e) {
+            console.err(e);
+          }
+          if (displayStyle && html) {
+            html = html.replace(
+              /class="katex"/g,
+              'class="katex katex-block" style="display: block;"'
+            );
+          }
+          return html;
+        } else {
+          return null;
+        }
+      }
+      marked.setOptions({ renderer: renderer });
+    </script>
   </head>
   <body>
     <div class="submitbox">
