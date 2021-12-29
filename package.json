@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "bundle": "esbuild ./src/pages/* --bundle --outdir=public/pages --minify --jsx-factory=jsxElem.createElement --jsx-fragment=jsxElem.Fragment",
-    "build": "node --loader ts-node/esm build.ts"
+    "build": "ts-node build.ts"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
@@ -17,20 +17,21 @@
     "@babel/preset-react": "^7.16.5",
     "@babel/preset-typescript": "^7.16.5",
     "@types/firebase": "^3.2.1",
+    "@types/jsdom": "^16.2.14",
     "@types/katex": "^0.11.1",
-    "@types/listr": "^0.14.4",
     "@types/marked": "^4.0.1",
+    "esm": "^3.2.25",
     "execa": "^6.0.0",
     "firebase": "^9.6.1",
+    "jsdom": "^19.0.0",
     "jsx-no-react": "^2.0.0",
     "katex": "^0.15.1",
-    "listr": "^0.14.3",
+    "listr2": "^3.13.5",
     "marked": "^4.0.8",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
   },
   "dependencies": {
     "esbuild": "^0.14.9"
-  },
-  "type": "module"
+  }
 }
