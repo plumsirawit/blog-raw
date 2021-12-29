@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "bundle": "esbuild ./src/pages/* --bundle --outdir=public/pages --minify --jsx-factory=jsxElem.createElement --jsx-fragment=jsxElem.Fragment",
-    "build": "ts-node build.ts"
+    "build": "node --loader ts-node/esm build.ts"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
