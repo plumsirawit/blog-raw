@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+
 <html>
   <head>
     <meta charset="utf-8" />
@@ -64,61 +66,12 @@
       integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx"
       crossorigin="anonymous"
     ></script>
-    <script>
-      // Edited from https://gist.github.com/tajpure/47c65cf72c44cb16f3a5df0ebc045f2f
-      const renderer = new marked.Renderer();
-      const parse = (text) => {
-        const blockRegex = /\$\$[^\$]*\$\$/g;
-        const inlineRegex = /\$[^\$]*\$/g;
-        let blockExprArray = text.match(blockRegex);
-        let inlineExprArray = text.match(inlineRegex);
-        for (let i in blockExprArray) {
-          const expr = blockExprArray[i];
-          const result = renderMathsExpression(expr);
-          text = text.replace(expr, result);
-        }
-        for (let i in inlineExprArray) {
-          const expr = inlineExprArray[i];
-          const result = renderMathsExpression(expr);
-          text = text.replace(expr, result);
-        }
-        return text;
-      };
-      const updateComponent = (componentName) => {
-        const originComponent = renderer[componentName].bind(renderer);
-        renderer[componentName] = (text, ...rest) =>
-          originComponent(parse(text), ...rest);
-      };
-      updateComponent("paragraph");
-      updateComponent("heading");
-      updateComponent("list");
-      function renderMathsExpression(expr) {
-        if (expr[0] === "$" && expr[expr.length - 1] === "$") {
-          let displayStyle = false;
-          expr = expr.substr(1, expr.length - 2);
-          if (expr[0] === "$" && expr[expr.length - 1] === "$") {
-            displayStyle = true;
-            expr = expr.substr(1, expr.length - 2);
-          }
-          let html = null;
-          try {
-            html = katex.renderToString(expr);
-          } catch (e) {
-            console.err(e);
-          }
-          if (displayStyle && html) {
-            html = html.replace(
-              /class="katex"/g,
-              'class="katex katex-block" style="display: block;"'
-            );
-          }
-          return html;
-        } else {
-          return null;
-        }
-      }
-      marked.setOptions({ renderer: renderer });
-    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"
+      integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./render.js"></script>
   </head>
   <body>
     <main id="content"><p>Loading . . .</p></main>
@@ -134,9 +87,7 @@
           .then((doc) => {
             if (doc.exists) {
               console.log("Document data:", doc.data());
-              document.getElementById("content").innerHTML = marked.parse(
-                doc.data().body
-              );
+              render(document.getElementById("content"), doc.data().body);
             } else {
               document.getElementById("content").innerHTML =
                 "Content not found!";

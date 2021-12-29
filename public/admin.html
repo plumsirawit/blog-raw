@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+
 <html>
   <head>
     <meta charset="utf-8" />
@@ -88,7 +90,13 @@
       integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx"
       crossorigin="anonymous"
     ></script>
-    <script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"
+      integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./render.js"></script>
+    <!-- <script>
       // Edited from https://gist.github.com/tajpure/47c65cf72c44cb16f3a5df0ebc045f2f
       const renderer = new marked.Renderer();
       const parse = (text) => {
@@ -142,7 +150,7 @@
         }
       }
       marked.setOptions({ renderer: renderer });
-    </script>
+    </script> -->
   </head>
   <body>
     <div class="submitbox">
@@ -177,7 +185,8 @@ Write something here . . . This will be rendered there . . .</textarea
     }
 
     function renderText() {
-      document.getElementById("content").innerHTML = marked.parse(
+      render(
+        document.getElementById("content"),
         document.getElementsByTagName("textarea")[0].value
       );
     }
