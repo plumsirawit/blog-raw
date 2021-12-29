@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        padding-top: 2%;
+        padding-left: 20%;
+        padding-right: 20%;
+        font-size: 1.05em;
+        font-family: "Sarabun", sans-serif;
+      }
+      @media screen and (max-width: 1000px) {
+        body {
+          padding-left: 5%;
+          padding-right: 5%;
+        }
+      }
+      button,
+      textarea {
+        font-size: 1.05em;
+        font-family: "Sarabun", sans-serif;
+      }
+      table {
+        font-size: 1em;
+        min-width: 50%;
+      }
+      table,
+      th,
+      td {
+        padding: 10px;
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+      .twodivs,
+      .submitbox {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+      .twodivs > div {
+        width: 50%;
+      }
+      .textdiv {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .textdiv > textarea {
+        width: 100%;
+        box-sizing: border-box;
+        resize: none;
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyDibwSzyUfnxK3k9_ZGPukPbdNgyePGT98",
+        authDomain: "blog-raw.firebaseapp.com",
+        projectId: "blog-raw",
+        storageBucket: "blog-raw.appspot.com",
+        messagingSenderId: "935368739139",
+        appId: "1:935368739139:web:bf30fa950e8d25542fc7f6",
+        measurementId: "G-675GPZY3NP",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"
+      integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"
+      integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js"
+      integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./render.js"></script>
+    <!-- <script>
+      // Edited from https://gist.github.com/tajpure/47c65cf72c44cb16f3a5df0ebc045f2f
+      const renderer = new marked.Renderer();
+      const parse = (text) => {
+        const blockRegex = /\$\$[^\$]*\$\$/g;
+        const inlineRegex = /\$[^\$]*\$/g;
+        let blockExprArray = text.match(blockRegex);
+        let inlineExprArray = text.match(inlineRegex);
+        for (let i in blockExprArray) {
+          const expr = blockExprArray[i];
+          const result = renderMathsExpression(expr);
+          text = text.replace(expr, result);
+        }
+        for (let i in inlineExprArray) {
+          const expr = inlineExprArray[i];
+          const result = renderMathsExpression(expr);
+          text = text.replace(expr, result);
+        }
+        return text;
+      };
+      const updateComponent = (componentName) => {
+        const originComponent = renderer[componentName].bind(renderer);
+        renderer[componentName] = (text, ...rest) =>
+          originComponent(parse(text), ...rest);
+      };
+      updateComponent("paragraph");
+      updateComponent("heading");
+      updateComponent("list");
+      function renderMathsExpression(expr) {
+        if (expr[0] === "$" && expr[expr.length - 1] === "$") {
+          let displayStyle = false;
+          expr = expr.substr(1, expr.length - 2);
+          if (expr[0] === "$" && expr[expr.length - 1] === "$") {
+            displayStyle = true;
+            expr = expr.substr(1, expr.length - 2);
+          }
+          let html = null;
+          try {
+            html = katex.renderToString(expr);
+          } catch (e) {
+            console.err(e);
+          }
+          if (displayStyle && html) {
+            html = html.replace(
+              /class="katex"/g,
+              'class="katex katex-block" style="display: block;"'
+            );
+          }
+          return html;
+        } else {
+          return null;
+        }
+      }
+      marked.setOptions({ renderer: renderer });
+    </script> -->
+  </head>
+  <body>
+    <div class="submitbox">
+      <input id="blogname" type="text" placeholder="Blog codename" />
+      <input id="password" type="password" placeholder="Open Sesame!" />
+      <button onclick="uploadText()">Publish</button>
+    </div>
+    <div class="twodivs">
+      <div class="textdiv">
+        <textarea id="textbody">
+Write something here . . . This will be rendered there . . .</textarea
+        >
+        <button onclick="renderText()">Render</button>
+      </div>
+      <div id="content"></div>
+    </div>
+  </body>
+  <script>
+    // Credit: https://stackoverflow.com/questions/454202/creating-a-textarea-with-auto-resize
+    const tx = document.getElementsByTagName("textarea");
+    for (let i = 0; i < tx.length; i++) {
+      tx[i].setAttribute(
+        "style",
+        "height:" + tx[i].scrollHeight + "px;overflow-y:hidden;"
+      );
+      tx[i].addEventListener("input", OnInput, false);
+    }
+
+    function OnInput() {
+      this.style.height = "auto";
+      this.style.height = this.scrollHeight + "px";
+    }
+
+    function renderText() {
+      render(
+        document.getElementById("content"),
+        document.getElementsByTagName("textarea")[0].value
+      );
+    }
+    renderText();
+
+    function uploadText() {
+      const xhttp = new XMLHttpRequest();
+      xhttp.onload = function () {
+        alert(this.responseText);
+      };
+      xhttp.open(
+        "POST",
+        "https://asia-southeast2-blog-raw.cloudfunctions.net/publishBlog",
+        true
+      );
+      const password = document.getElementById("password").value;
+      const codename = document.getElementById("blogname").value;
+      const body = document.getElementById("textbody").value;
+      xhttp.send(JSON.stringify({ password, codename, body }));
+    }
+  </script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = urlParams.get("name");
+    if (name) {
+      db.collection("blog")
+        .doc(name)
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            document.getElementById("textbody").value = doc.data().body;
+            OnInput.bind(document.getElementById("textbody"))();
+          }
+        })
+        .catch((error) => {
+          console.log("Error getting document:", error);
+        });
+    }
+  </script>
+</html>

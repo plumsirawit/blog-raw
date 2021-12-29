@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        padding-top: 2%;
+        padding-left: 20%;
+        padding-right: 20%;
+        font-size: 1.05em;
+        font-family: "Sarabun", sans-serif;
+      }
+      @media screen and (max-width: 1000px) {
+        body {
+          padding-left: 5%;
+          padding-right: 5%;
+          font-size: 1.7em;
+        }
+      }
+      table {
+        font-size: 1em;
+        width: 100%;
+      }
+      table,
+      th,
+      td {
+        padding: 10px;
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+      .head-mono {
+        font-weight: 500;
+        font-family: "Inconsolata", "Sarabun", sans-serif;
+        color: gray;
+        text-align: right;
+        margin-bottom: 0.2em;
+        margin-top: 0.2em;
+      }
+      #content {
+        padding-top: 0.2em;
+        text-align: center;
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@500&family=Sarabun:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script>
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyDibwSzyUfnxK3k9_ZGPukPbdNgyePGT98",
+        authDomain: "blog-raw.firebaseapp.com",
+        projectId: "blog-raw",
+        storageBucket: "blog-raw.appspot.com",
+        messagingSenderId: "935368739139",
+        appId: "1:935368739139:web:bf30fa950e8d25542fc7f6",
+        measurementId: "G-675GPZY3NP",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1 class="head-mono">blog.plummmm.com</h1>
+      <h3 class="head-mono">A (quickly-made) personal blog</h3>
+      <p id="content">Loading . . .</p>
+    </header>
+    <main>
+      <table>
+        <thead>
+          <tr>
+            <th>Blog</th>
+            <th>Date</th>
+            <th>Language</th>
+          </tr>
+        </thead>
+        <tbody id="tablebody"></tbody>
+      </table>
+    </main>
+  </body>
+  <script>
+    const tableBody = document.getElementById("tablebody");
+    const createTd = (text) => {
+      const td = document.createElement("td");
+      td.innerHTML = text;
+      return td;
+    };
+    db.collection("blog")
+      .orderBy("currentTimestamp", "desc")
+      .get()
+      .then((docs) => {
+        docs.forEach((doc) => {
+          console.log(doc);
+          const tr = document.createElement("tr");
+          tr.appendChild(
+            createTd(`<a href=\"blog.html?name=${doc.id}\">${doc.id}</a>`)
+          );
+          const date =
+            doc.data().currentTimestamp &&
+            new Date(doc.data().currentTimestamp.seconds * 1000);
+          const dateTimeString =
+            date.toDateString() + " " + date.toTimeString();
+          tr.appendChild(
+            createTd(dateTimeString.slice(0, dateTimeString.indexOf("(") - 1))
+          );
+          tr.appendChild(createTd(doc.data().lang ?? "unknown"));
+          tableBody.appendChild(tr);
+        });
+        document.getElementById("content").innerHTML = "";
+      })
+      .catch((error) => {
+        document.getElementById("content").innerHTML =
+          "Error getting document!";
+        console.log("Error getting document:", error);
+      });
+  </script>
+</html>
