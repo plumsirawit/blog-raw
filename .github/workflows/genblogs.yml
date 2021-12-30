@@ -6,12 +6,8 @@ name: genblogs
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
-  workflow_dispatch:
-  
-  # Allows external webhook trigger
   repository_dispatch:
-    types:
-      - webhook_genblogs
+    types: [gen]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
