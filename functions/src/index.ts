@@ -1,11 +1,12 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-admin.initializeApp();
+if (admin.apps.length == 0) admin.initializeApp();
 const firestore = admin.firestore();
 import * as t from "io-ts";
 import { isLeft } from "fp-ts/lib/Either";
 import { HASHED_SECRET_PASSWORD } from "./password";
 import { compare } from "bcrypt";
+import { innerListenWrite } from "./listenWrite";
 
 const PublishBlogRequestPayload = t.type({
   codename: t.string,
@@ -74,4 +75,25 @@ export const publishBlog = functions
       currentTimestamp: admin.firestore.FieldValue.serverTimestamp(),
     });
     response.status(200).send("ok");
+  });
+
+export const listenWrite = functions
+  .region("asia-southeast2")
+  .runWith({
+    timeoutSeconds: 60,
+    memory: "1GB",
+  })
+  .firestore.document("blog/{blogId}")
+  .onWrite(innerListenWrite);
+
+export const triggerListenWrite = functions
+  .region("asia-southeast2")
+  .runWith({
+    timeoutSeconds: 60,
+    memory: "1GB",
+  })
+  .https.onRequest(async (_, response) => {
+    response.setHeader("Access-Control-Allow-Origin", "*");
+    await innerListenWrite();
+    response.send("OK");
   });
