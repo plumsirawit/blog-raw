@@ -79,21 +79,16 @@ export const publishBlog = functions
 
 export const listenWrite = functions
   .region("asia-southeast2")
-  .runWith({
-    timeoutSeconds: 60,
-    memory: "1GB",
-  })
   .firestore.document("blog/{blogId}")
   .onWrite(innerListenWrite);
 
+/* For testing purposes only.
+
 export const triggerListenWrite = functions
   .region("asia-southeast2")
-  .runWith({
-    timeoutSeconds: 60,
-    memory: "1GB",
-  })
   .https.onRequest(async (_, response) => {
     response.setHeader("Access-Control-Allow-Origin", "*");
     await innerListenWrite();
     response.send("OK");
   });
+*/
