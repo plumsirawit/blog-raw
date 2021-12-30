@@ -3,8 +3,10 @@ A raw, (finally finished) blog
 
 [![genblogs](https://github.com/plumsirawit/blog-raw/actions/workflows/genblogs.yml/badge.svg?branch=main)](https://github.com/plumsirawit/blog-raw/actions/workflows/genblogs.yml)
 
-## How it works?
-(Just in case I, myself, have a chance to look back at this.)
+## How does it work?
+(Just in case I, myself, have a chance to look back at this.) See this figure:
+
+![](https://github.com/plumsirawit/blog-raw/blob/main/blogflow.drawio.svg)
 
 So there is an [admin page](https://blog.plummmm.com/admin.html) which the admin can write anything they want, with the condition that the password provided must be correct. (Will be verified by functions)
 
