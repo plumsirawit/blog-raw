@@ -27,9 +27,7 @@
         </div>
         <div class="twodivs">
           <div class="textdiv">
-            <textarea id="textbody">
-              Write something here . . . This will be rendered there . . .
-            </textarea>
+            <textarea id="textbody">Write something here...</textarea>
             <button onClick="renderText()">Render</button>
           </div>
           <div id="content"></div>
@@ -67,6 +65,7 @@
   <script>
     // Credit: https://stackoverflow.com/questions/454202/creating-a-textarea-with-auto-resize
     const tx = document.getElementsByTagName("textarea");
+    let lastRows = -1;
     for (let i = 0; i < tx.length; i++) {
       tx[i].setAttribute(
         "style",
@@ -76,8 +75,11 @@
     }
 
     function OnInput() {
-      this.style.height = "auto";
-      this.style.height = this.scrollHeight + "px";
+      if (this.value.split("\n").length != lastRows) {
+        this.style.height = "auto";
+        this.style.height = this.scrollHeight + "px";
+        lastRows = this.value.split("\n").length;
+      }
     }
 
     const urlParams = new URLSearchParams(window.location.search);

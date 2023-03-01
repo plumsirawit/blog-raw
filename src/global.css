@@ -58,7 +58,13 @@ td {
 #content {
   padding-top: 0.2em;
   /* text-align: center; */
+  padding-left: 1em;
+  padding-right: 1em;
 }
 #maintable {
   width: 100%;
+}
+#textbody {
+  font-family: monospace;
+  font-size: 1.5em;
 }
