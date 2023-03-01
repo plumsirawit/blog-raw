@@ -40,4 +40,18 @@
       </div>
     </div>
   </body>
+  <script>
+    const elems = document.getElementsByClassName("td-date");
+    for (let i = 0; i < elems.length; i++) {
+      const td = elems.item(i);
+      const date = new Date(parseInt(td.innerHTML));
+      const dateTimeString = date.toDateString() + " " + date.toTimeString();
+      const outString = dateTimeString.slice(
+        0,
+        dateTimeString.indexOf("(") - 1
+      );
+      td.innerHTML = outString;
+      td.style.removeProperty("opacity");
+    }
+  </script>
 </html>

@@ -93,14 +93,12 @@ getDocs(
             tr.appendChild(
               createTd(`<a href="posts/${doc.id}.html">${doc.id}</a>`)
             );
-            const date =
-              doc.data().currentTimestamp &&
-              new Date(doc.data().currentTimestamp.seconds * 1000);
-            const dateTimeString =
-              date.toDateString() + " " + date.toTimeString();
-            tr.appendChild(
-              createTd(dateTimeString.slice(0, dateTimeString.indexOf("(") - 1))
-            );
+            const date = (doc.data().currentTimestamp &&
+              doc.data().currentTimestamp.toDate()) as Date;
+            const dateTd = createTd(date.getTime().toString());
+            dateTd.style.setProperty("opacity", "0");
+            dateTd.classList.add("td-date");
+            tr.appendChild(dateTd);
             tr.appendChild(createTd(doc.data().lang ?? "unknown"));
             tableBody?.appendChild(tr);
           });
