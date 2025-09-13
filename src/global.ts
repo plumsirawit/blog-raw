@@ -14,5 +14,5 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
-export { renderMarkdown } from "./utils/render";
+export { renderMarkdown, marked } from "./utils/render";
 export { collection, doc, getDoc } from "firebase/firestore/lite";
