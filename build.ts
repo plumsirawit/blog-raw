@@ -57,10 +57,10 @@ getDocs(
           docs.forEach((doc) => {
             jobs.push({
               title: `Generate ${doc.id}.html`,
-              task: () => {
+              task: async () => {
                 const dom = new JSDOM(TEMPLATE_BLOG);
                 global.document = dom.window.document;
-                renderMarkdown(
+                await renderMarkdown(
                   dom.window.document.getElementById("content")!,
                   doc.data().body
                 );
