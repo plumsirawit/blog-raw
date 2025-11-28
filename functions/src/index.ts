@@ -31,19 +31,51 @@ const PublishBlogRequestPayload = t.type({
 export const publishBlog = functions
   .region("asia-southeast2")
   .https.onRequest(async (request, response) => {
-    response.setHeader("Access-Control-Allow-Origin", "*");
-    const bodyDecoded = PublishBlogRequestPayload.decode(
-      JSON.parse(request.body)
-    );
+    // Restrict CORS to specific domains
+    const allowedOrigins = [
+      "https://blog.plummmm.com",
+      "http://localhost:5000",
+      "http://localhost:3000",
+    ];
+    const origin = request.headers.origin;
+    if (origin && allowedOrigins.includes(origin)) {
+      response.setHeader("Access-Control-Allow-Origin", origin);
+    }
+
+    // Parse JSON with error handling
+    let parsedBody;
+    try {
+      parsedBody = JSON.parse(request.body);
+    } catch (e) {
+      response.status(400).send({ error: "Invalid JSON" });
+      return;
+    }
+
+    const bodyDecoded = PublishBlogRequestPayload.decode(parsedBody);
     if (isLeft(bodyDecoded)) {
-      console.log("bad request", request.body);
+      // Don't log sensitive request body
+      functions.logger.warn("Bad request: invalid payload structure");
       response.status(400).send({ error: "bad request" });
       return;
     }
     const { codename, body, password } = bodyDecoded.right;
+
+    // Validate codename to prevent path traversal and injection
+    if (!/^[a-zA-Z0-9_-]+$/.test(codename)) {
+      response.status(400).send({ error: "Invalid codename format" });
+      return;
+    }
+
+    // Limit codename length
+    if (codename.length > 100) {
+      response.status(400).send({ error: "Codename too long" });
+      return;
+    }
+
     const test = await compare(password, HASHED_SECRET_PASSWORD);
     if (!test) {
-      console.log("wrong password");
+      // Don't log password attempts
+      functions.logger.warn("Authentication failed");
       response.status(403).send({ error: "wrong password" });
       return;
     }

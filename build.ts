@@ -82,24 +82,32 @@ getDocs(
         task: async () => {
           const dom = new JSDOM(TEMPLATE_INDEX);
           const { document } = dom.window;
-          const createTd = (text: string) => {
-            const td = document.createElement("td");
-            td.innerHTML = text;
-            return td;
-          };
           const tableBody = document.getElementById("tablebody");
           docs.forEach((doc) => {
             const tr = document.createElement("tr");
-            tr.appendChild(
-              createTd(`<a href="posts/${doc.id}.html">${doc.id}</a>`)
-            );
+
+            // Create link cell safely
+            const linkTd = document.createElement("td");
+            const link = document.createElement("a");
+            link.href = `posts/${doc.id}.html`;
+            link.textContent = doc.id;
+            linkTd.appendChild(link);
+            tr.appendChild(linkTd);
+
+            // Create date cell safely
             const date = (doc.data().currentTimestamp &&
               doc.data().currentTimestamp.toDate()) as Date;
-            const dateTd = createTd(date.getTime().toString());
+            const dateTd = document.createElement("td");
+            dateTd.textContent = date.getTime().toString();
             dateTd.style.setProperty("opacity", "0");
             dateTd.classList.add("td-date");
             tr.appendChild(dateTd);
-            tr.appendChild(createTd(doc.data().lang ?? "unknown"));
+
+            // Create lang cell safely
+            const langTd = document.createElement("td");
+            langTd.textContent = doc.data().lang ?? "unknown";
+            tr.appendChild(langTd);
+
             tableBody?.appendChild(tr);
           });
           fs.writeFileSync(`./public/index.html`, dom.serialize());

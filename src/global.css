@@ -1,70 +1,143 @@
 body {
-  padding-top: 2%;
-  padding-left: 20%;
-  padding-right: 20%;
-  font-size: 1.05em;
-  font-family: "Sarabun", sans-serif;
-}
-@media screen and (max-width: 1000px) {
-  body {
-    padding-left: 5%;
-    padding-right: 5%;
-    font-size: 1.7em;
+    padding-top: 2%;
+    padding-left: 20%;
+    padding-right: 20%;
+    font-size: 1.05em;
+    font-family: "Sarabun", sans-serif;
   }
-}
-button,
-textarea {
-  font-size: 1.05em;
-  font-family: "Sarabun", sans-serif;
-}
-table {
-  font-size: 1em;
-  min-width: 50%;
-}
-table,
-th,
-td {
-  padding: 10px;
-  border: 1px solid black;
-  border-collapse: collapse;
-}
-.twodivs,
-.submitbox {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-.twodivs > div {
-  width: 50%;
-}
-.textdiv {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.textdiv > textarea {
-  width: 100%;
-  box-sizing: border-box;
-  resize: none;
-}
-.head-mono {
-  font-weight: 500;
-  font-family: "Inconsolata", "Sarabun", sans-serif;
-  color: gray;
-  text-align: right;
-  margin-bottom: 0.2em;
-  margin-top: 0.2em;
-}
-#content {
-  padding-top: 0.2em;
-  /* text-align: center; */
-  padding-left: 1em;
-  padding-right: 1em;
-}
-#maintable {
-  width: 100%;
-}
-#textbody {
-  font-family: monospace;
-  font-size: 1.5em;
-}
+  @media screen and (max-width: 1000px) {
+    body {
+      padding-left: 5%;
+      padding-right: 5%;
+      font-size: 1.7em;
+    }
+  }
+  button,
+  textarea {
+    font-size: 1.05em;
+    font-family: "Sarabun", sans-serif;
+  }
+  table {
+    font-size: 1em;
+    min-width: 50%;
+  }
+  table,
+  th,
+  td {
+    padding: 10px;
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+  .twodivs,
+  .submitbox {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 1em;
+    margin-bottom: 1em;
+  }
+  .submitbox {
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .submitbox input {
+    padding: 0.5em;
+    font-size: 1.05em;
+    font-family: "Sarabun", sans-serif;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex: 1;
+    min-width: 150px;
+  }
+  .submitbox button {
+    padding: 0.5em 1.5em;
+    font-size: 1.05em;
+    font-family: "Sarabun", sans-serif;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  .submitbox button:hover {
+    background-color: #0056b3;
+  }
+  .twodivs {
+    gap: 2em;
+    align-items: flex-start;
+  }
+  @media screen and (max-width: 1000px) {
+    .twodivs {
+      flex-direction: column;
+    }
+    .twodivs > div {
+      width: 100%;
+    }
+    .submitbox {
+      flex-direction: column;
+    }
+    .submitbox input,
+    .submitbox button {
+      width: 100%;
+    }
+  }
+  .twodivs > div {
+    width: 50%;
+  }
+  .textdiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5em;
+  }
+  .textdiv > textarea {
+    width: 100%;
+    box-sizing: border-box;
+    resize: none;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .textdiv > button {
+    padding: 0.5em 1.5em;
+    font-size: 1.05em;
+    font-family: "Sarabun", sans-serif;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    align-self: flex-start;
+  }
+  .textdiv > button:hover {
+    background-color: #218838;
+  }
+  .head-mono {
+    font-weight: 500;
+    font-family: "Inconsolata", "Sarabun", sans-serif;
+    color: gray;
+    text-align: right;
+    margin-bottom: 0.2em;
+    margin-top: 0.2em;
+  }
+  #content {
+    padding-top: 0.2em;
+    /* text-align: center; */
+    padding-left: 1em;
+    padding-right: 1em;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    min-height: 200px;
+    overflow-y: auto;
+  }
+  #maintable {
+    width: 100%;
+  }
+  #textbody {
+    font-family: monospace;
+    font-size: 1.5em;
+  }
+  
